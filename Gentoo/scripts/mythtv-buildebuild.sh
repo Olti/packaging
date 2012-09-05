@@ -64,7 +64,7 @@ check_repo()
 		git clone --bare https://github.com/MythTV/${repo} ${base_dir}/${repo}
 	fi
 
-	pushd ${base_dir}/${repo} 2>&1 /dev/null
+	pushd ${base_dir}/${repo} 2>&1 > /dev/null
 
 	# Check if it is a git repository
 	GIT_DIR=$(git rev-parse --git-dir 2>/dev/null)
@@ -73,7 +73,7 @@ check_repo()
 		return 1
 	fi
 
-	popd
+	popd 2>&1 > /dev/null
 
 	return 0
 }
@@ -184,7 +184,7 @@ update_ebuild()
 	sed -i "s@^\(MYTHTV_SREV=\).*@\1\"${latest_commit_short}\"@" ${new_ebuild} || return 1
 
 	# Update the ebuild manifest
-	ebuild ${new_ebuild} manifest || return 1
+	ebuild ${new_ebuild} manifest 2>&1 > /dev/null || return 1
 
 	return 0
 }
